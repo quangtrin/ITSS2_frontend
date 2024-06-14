@@ -1,0 +1,43 @@
+.chat-window {
+    display: flex;
+    flex-direction: column;
+    height: 89vh;
+    width: 40vw;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .chat-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .header-info {
+    margin-left: 10px;
+  }
+  
+  .name {
+    font-weight: bold;
+  }
+  
+  .chat-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .chat-footer {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .chat-input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+  }
+  

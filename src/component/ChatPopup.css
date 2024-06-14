@@ -1,0 +1,5 @@
+/* src/components/ChatList.css */
+.chat-list {
+    height: 70vh;
+    overflow-y: auto;
+  }
