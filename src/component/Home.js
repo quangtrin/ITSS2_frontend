@@ -92,7 +92,6 @@ const JobTile = (props) => {
         setPopup({
           open: true,
           severity: "error",
-          message: err.response.data.message,
         });
         handleClose();
       });

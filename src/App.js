@@ -24,6 +24,7 @@ import ListCv from "./component/ListCv";
 import { Popover } from "antd";
 import ChatPopup from "./component/ChatPopup";
 import ChatWindow from "./component/ChatWindow";
+import { server } from "./lib/apiList";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -54,12 +55,12 @@ function App() {
   const [openMessage, setOpenMessage] = useState(false);
 
   useEffect(() => {
-    const socket = io("http://localhost:4444");
+    const socket = io(server);
     setSocket(socket);
   }, []);
 
   useEffect(() => {
-    setChatFeature(false);
+    setChatFeature(localStorage.getItem("token") ? true : false);
   }, []);
 
   return (
@@ -67,11 +68,15 @@ function App() {
       <SetPopupContext.Provider value={setPopup}>
         <Grid container direction="column">
           <Grid item xs>
-            <Navbar setChatFeature={setChatFeature}/>
+            <Navbar setChatFeature={setChatFeature} />
           </Grid>
           <Grid item className={classes.body}>
             <Switch>
-              <Route exact path="/" element={<Login setChatFeature={setChatFeature}/>} />
+              <Route
+                exact
+                path="/"
+                element={<Login setChatFeature={setChatFeature} />}
+              />
               <Route exact path="/signup" element={<Signup />} />
               <Route exact path="/logout" element={<Logout />} />
               <Route exact path="/home" element={<Home />} />

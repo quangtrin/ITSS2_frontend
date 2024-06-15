@@ -17,6 +17,7 @@ import { SetPopupContext } from "../App";
 
 import apiList from "../lib/apiList";
 import isAuth, { userType } from "../lib/isAuth";
+import { Spin } from "antd";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -36,6 +37,7 @@ const Login = (props) => {
   const setPopup = useContext(SetPopupContext);
 
   const [loggedin, setLoggedin] = useState(isAuth());
+  const [loading, setLoading] = useState(false);
 
   const [inputErrorHandler, setInputErrorHandler] = useState({
     email: {
@@ -59,29 +61,30 @@ const Login = (props) => {
         email: email,
         password: "123456",
       };
+      setLoading(true);
       axios
         .post(apiList.login, details)
         .then((response) => {
+          setLoading(false);
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
           setLoggedin(isAuth());
-          setPopup({
-            open: true,
-            severity: "success",
-            message: "Logged in successfully",
-          });
+          // setPopup({
+          //   open: true,
+          //   severity: "success",
+          //   message: "Logged in successfully",
+          // });
           userType() === "recruiter"
             ? history("/listcv")
             : history("/applications");
-            props.setChatFeature(true);
+          props.setChatFeature(true);
         })
         .catch((err) => {
+          setLoading(false);
           setPopup({
             open: true,
             severity: "error",
-            message: err.response.data.message,
           });
-          console.log(err.response);
         });
     } else {
       setPopup({
@@ -97,7 +100,7 @@ const Login = (props) => {
     localStorage.removeItem("type");
   }, []);
 
-  return (
+  return !loading ? (
     // <Paper elevation={3} className={classes.body}>
     //   <Grid container direction="column" spacing={4} alignItems="center">
     //     {/* <Grid item>
@@ -139,6 +142,10 @@ const Login = (props) => {
       <Button onClick={() => handleLogin("applicant")}>applicant</Button>
       <Button onClick={() => handleLogin("recruiter")}>recruiter</Button>
     </>
+  ) : (
+    <div>
+      <Spin />
+    </div>
   );
 };
 

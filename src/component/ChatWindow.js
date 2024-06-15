@@ -7,12 +7,13 @@ import { useEffect } from "react";
 import axios from "axios";
 import apiList from "../lib/apiList";
 import { userType } from "../lib/isAuth";
-import io from "socket.io-client";
+import { Spin } from "antd";
 
 const ChatWindow = ({ socket }) => {
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState();
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(true);
   const lastMessageRef = React.useRef();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,6 +38,7 @@ const ChatWindow = ({ socket }) => {
 
   useEffect(() => {
     const fetchMessages = async () => {
+      setLoading(true);
       const res = await axios.get(apiList.chats, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -49,20 +51,21 @@ const ChatWindow = ({ socket }) => {
           ? lastMessage.receiver
           : lastMessage.sender
       );
+      setLoading(false);
     };
     fetchMessages();
   }, []);
 
   useEffect(() => {
     socket.on("send-message", (message) => {
-      console.log([...messages, message.message]);
       setMessages((messages) => [...messages, message.message]);
     });
   }, [socket]);
 
   useEffect(() => {
-    if (lastMessageRef)
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    if (lastMessageRef) {
+      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages, lastMessageRef]);
   return (
     <div className="chat-window">

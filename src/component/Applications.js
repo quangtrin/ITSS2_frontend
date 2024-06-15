@@ -189,14 +189,14 @@ const ApplicationTile = (props) => {
           <Grid item direction="row" container alignItems="center">
             <Grid item>
               <img
-                src={EmployersLogo}
+                src={job.image}
                 alt="Employers Logo"
-                style={{ marginRight: "10px" }}
+                style={{ marginRight: "10px", width: "40px"}}
               />
             </Grid>
             <Grid>
               <Grid item>
-                <div style={{ marginBottom: "5px" }}>Google Inc.</div>
+                <div style={{ marginBottom: "5px" }}>{job.companyName}</div>
               </Grid>
               <Grid item container direction="row">
                 <Grid>
@@ -209,7 +209,7 @@ const ApplicationTile = (props) => {
                 </Grid>
                 <Grid>
                   <div style={{ lineHeight: "20px", color: "#767F8C" }}>
-                    Dhaka, Bangladesh
+                    {job.address}
                   </div>
                 </Grid>
               </Grid>

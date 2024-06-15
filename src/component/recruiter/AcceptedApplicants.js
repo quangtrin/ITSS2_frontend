@@ -431,7 +431,6 @@ const ApplicationTile = (props) => {
         setPopup({
           open: true,
           severity: "error",
-          message: err.response.data.message,
         });
         // fetchRating();
         getData();
@@ -515,7 +514,6 @@ const ApplicationTile = (props) => {
         setPopup({
           open: true,
           severity: "error",
-          message: err.response.data.message,
         });
         console.log(err.response);
         handleCloseEndJob();
@@ -761,7 +759,6 @@ const AcceptedApplicants = (props) => {
         setPopup({
           open: true,
           severity: "error",
-          message: err.response.data.message,
         });
       });
   };

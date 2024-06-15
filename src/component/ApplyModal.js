@@ -4,7 +4,7 @@ const ApplyModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-1/2 h-3/5">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-1/2 h-fit ">
         <div className="flex justify-end pb-2">
           <button
             onClick={() => {
@@ -15,20 +15,21 @@ const ApplyModal = ({ isOpen, onClose }) => {
             ✖
           </button>
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center flex-col gap-6">
+          <div className=" text-2xl font-semibold">Upload your CV</div>
           <div className="w-2/3">
             <textarea
-              placeholder="Gửi đôi lời tới công ty nhé!"
+              placeholder="Please send a few words to the company!"
               className="border-2 border-gray-200 p-2 rounded-lg w-full"
               rows="4"
             ></textarea>
-            <p className="pt-2 font-bold">CV của bạn</p>
+            <p className="pt-2 font-bold">Your CV</p>
             <input
               className="pt-2"
               type="file"
               accept="image/*"
               name="url"
-              placeholder="Chọn CV"
+              placeholder="Select CV"
             />
           </div>
 
@@ -40,12 +41,12 @@ const ApplyModal = ({ isOpen, onClose }) => {
               className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-blue-700"
               onClick={onClose}
             >
-              Hủy
+              Cancel
             </button>
           </div>
           <div className="flex justify-center mt-4">
             <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
-              Gửi
+              Send
             </button>
           </div>
         </div>

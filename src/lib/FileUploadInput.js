@@ -14,7 +14,6 @@ const FileUploadInput = (props) => {
   const [uploadPercentage, setUploadPercentage] = useState(0);
 
   const handleUpload = () => {
-    console.log(file);
     const data = new FormData();
     data.append("file", file);
     Axios.post(uploadTo, data, {
@@ -39,11 +38,9 @@ const FileUploadInput = (props) => {
         });
       })
       .catch((err) => {
-        console.log(err.response);
         setPopup({
           open: true,
           severity: "error",
-          message: err.response.statusText,
           //   message: err.response.data
           //     ? err.response.data.message
           //     : err.response.statusText,

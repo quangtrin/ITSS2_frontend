@@ -5,12 +5,15 @@ import "./ChatPopup.css"; // optional, for styling
 import axios from "axios";
 import apiList from "../lib/apiList";
 import { userType } from "../lib/isAuth";
+import { Spin } from "antd";
 
 const ChatPopup = ({ setOpenMessage, openMessage, setOpenListMessage }) => {
   const [users, setUsers] = useState(); // replace with actual user dataq
 
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchMessages = async () => {
+      setLoading(true);
       const res = await axios.get(apiList.chats, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -27,10 +30,11 @@ const ChatPopup = ({ setOpenMessage, openMessage, setOpenListMessage }) => {
               : "https://inhoangkien.vn/wp-content/uploads/2023/04/Logo-DH-Bach-Khoa-HN-HUST-anh-bia-01.jpg",
         },
       ]);
+      setLoading(false);
     };
     fetchMessages();
   }, []);
-  return (
+  return !loading ? (
     <div className="chat-list">
       {users &&
         users.map((user, index) => (
@@ -42,6 +46,10 @@ const ChatPopup = ({ setOpenMessage, openMessage, setOpenListMessage }) => {
             setOpenListMessage={setOpenListMessage}
           />
         ))}
+    </div>
+  ) : (
+    <div>
+      <Spin />
     </div>
   );
 };
