@@ -353,8 +353,8 @@ const Applications = (props) => {
   };
 
   return (
-    <Grid container direction="row" spacing={2}>
-      <Grid item xs={12} className={classes.searchBar}>
+    <Grid container direction="row" >
+      <Grid item xs={12} className={classes.searchBar} style={{paddingTop: "10px"}}>
         <TextField
           label="Search"
           variant="outlined"
