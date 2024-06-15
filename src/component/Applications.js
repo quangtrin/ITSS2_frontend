@@ -161,6 +161,7 @@ const ApplicationTile = (props) => {
       className={`${classes.jobTileOuter} cursor-pointer`}
       elevation={3}
       onClick={() => navigate(`/detailjob/${job._id}`)}
+      style={{height: "190px"}}
     >
       <Grid container>
         <Grid container item xs={12} spacing={1} direction="row">
