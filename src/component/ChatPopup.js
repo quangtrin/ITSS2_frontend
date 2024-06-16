@@ -7,10 +7,18 @@ import apiList from "../lib/apiList";
 import { userType } from "../lib/isAuth";
 import { Spin } from "antd";
 
-const ChatPopup = ({ setOpenMessage, openMessage, setOpenListMessage }) => {
+const ChatPopup = ({
+  setOpenMessage,
+  openMessage,
+  setOpenListMessage,
+  messages,
+  setMessages,
+  setReceiver,
+  loading,
+  setLoading,
+}) => {
   const [users, setUsers] = useState(); // replace with actual user dataq
 
-  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchMessages = async () => {
       setLoading(true);
@@ -19,10 +27,26 @@ const ChatPopup = ({ setOpenMessage, openMessage, setOpenListMessage }) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }); // fetch user data from API
+      setMessages(res.data);
+      const lastMessage = res.data[0];
+      setReceiver(
+        userType() === lastMessage.sender.type
+          ? lastMessage.receiver
+          : lastMessage.sender
+      );
+      setLoading(false);
+    };
+    fetchMessages();
+  }, []);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      setLoading(true);
+
       setUsers([
         {
           name: userType() === "recruiter" ? "Quang" : "quangceo",
-          lastMessage: res.data?.pop(),
+          lastMessage: messages?.pop(),
           timestamp: "1 giờ",
           avatar:
             userType() === "recruiter"
@@ -33,7 +57,8 @@ const ChatPopup = ({ setOpenMessage, openMessage, setOpenListMessage }) => {
       setLoading(false);
     };
     fetchMessages();
-  }, []);
+  }, [messages]);
+  
   return !loading ? (
     <div className="chat-list">
       {users &&

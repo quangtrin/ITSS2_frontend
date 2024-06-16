@@ -80,6 +80,7 @@ const Login = (props) => {
           props.setChatFeature(true);
         })
         .catch((err) => {
+          console.log(err);
           setLoading(false);
           setPopup({
             open: true,

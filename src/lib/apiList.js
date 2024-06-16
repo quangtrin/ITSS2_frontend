@@ -1,4 +1,4 @@
-export const server = "https://itss2-backend-i5g7.onrender.com";
+export const server = "http://localhost:4444"; 
 
 const apiList = {
   login: `${server}/auth/login`,
@@ -12,6 +12,7 @@ const apiList = {
   applicants: `${server}/api/applicants`,
   detailJob: (id) => `${server}/api/job/${id}`,
   chats: `${server}/api/chats`,
+  appliedJobs: `${server}/api/appliedJobs`,
   sendChat: `${server}/api/chat`,
 };
 

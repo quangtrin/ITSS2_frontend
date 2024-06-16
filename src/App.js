@@ -26,13 +26,14 @@ import ChatPopup from "./component/ChatPopup";
 import ChatWindow from "./component/ChatWindow";
 import { server } from "./lib/apiList";
 
+
 const useStyles = makeStyles((theme) => ({
   body: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    minHeight: "98vh",
+    height: "100vh",
     paddingTop: "64px",
     boxSizing: "border-box",
     width: "100%",
@@ -50,13 +51,18 @@ function App() {
     severity: "",
     message: "",
   });
-
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [receiver, setReceiver] = useState();
   const [openListMessage, setOpenListMessage] = useState(false);
   const [openMessage, setOpenMessage] = useState(false);
 
   useEffect(() => {
     const socket = io(server);
     setSocket(socket);
+    socket.on("send-message", (message) => {
+      setMessages((messages) => [...messages, message.message]);
+    });
   }, []);
 
   useEffect(() => {
@@ -124,6 +130,13 @@ function App() {
               trigger={"click"}
               content={
                 <ChatPopup
+                  socket={socket}
+                  messages={messages}
+                  setMessages={setMessages}
+                  receiver={receiver}
+                  setReceiver={setReceiver}
+                  loading={loading}
+                  setLoading={setLoading}
                   setOpenMessage={setOpenMessage}
                   openMessage={openMessage}
                   setOpenListMessage={setOpenListMessage}
@@ -141,7 +154,17 @@ function App() {
             </Popover>
             <Popover
               open={openMessage}
-              content={<ChatWindow socket={socket} />}
+              content={
+                <ChatWindow
+                  socket={socket}
+                  messages={messages}
+                  setMessages={setMessages}
+                  loading={loading}
+                  setLoading={setLoading}
+                  receiver={receiver}
+                  setReceiver={setReceiver}
+                />
+              }
               onOpenChange={(value) => setOpenMessage(value)}
               trigger={"click"}
             ></Popover>

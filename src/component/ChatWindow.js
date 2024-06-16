@@ -9,11 +9,8 @@ import apiList from "../lib/apiList";
 import { userType } from "../lib/isAuth";
 import { Spin } from "antd";
 
-const ChatWindow = ({ socket }) => {
-  const [messages, setMessages] = useState([]);
-  const [receiver, setReceiver] = useState();
+const ChatWindow = ({ socket, messages, setMessages, receiver, setReceiver, loading, setLoading }) => {
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(true);
   const lastMessageRef = React.useRef();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,12 +52,6 @@ const ChatWindow = ({ socket }) => {
     };
     fetchMessages();
   }, []);
-
-  useEffect(() => {
-    socket.on("send-message", (message) => {
-      setMessages((messages) => [...messages, message.message]);
-    });
-  }, [socket]);
 
   useEffect(() => {
     if (lastMessageRef) {

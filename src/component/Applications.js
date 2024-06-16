@@ -15,7 +15,9 @@ import {
   FormGroup,
   MenuItem,
   Checkbox,
-  FormControl, InputLabel, Select,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
@@ -26,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { SetPopupContext } from "../App";
 
 import apiList from "../lib/apiList";
+import { userType } from "../lib/isAuth";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -52,28 +55,25 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   searchBar: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    position: 'fixed',   
-    width: '100%',
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    width: "100%",
     top: 60,
-    background: 'white',
-    paddingLeft: '28px !important',
-    paddingRight: '28px !important',
+    background: "white",
+    paddingLeft: "28px !important",
+    paddingRight: "28px !important",
+    marginBottom: "20px",
   },
   filterBar: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    position: 'fixed',   
-    width: '100%',
+    display: "flex",
+    flexWrap: "wrap",
+    width: "100%",
     top: 135,
-    background: 'white',
-    paddingLeft: '28px !important',
-    paddingRight: '14px !important',
+    background: "white",
+    paddingLeft: "28px !important",
+    paddingRight: "14px !important",
   },
-
 }));
 
 const ApplicationTile = (props) => {
@@ -83,64 +83,6 @@ const ApplicationTile = (props) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(1);
-  // const appliedOn = new Date(application.dateOfApplication);
-  // const joinedOn = new Date(application.dateOfJoining);
-
-  // const fetchRating = () => {
-  //   axios
-  //     .get(`${apiList.rating}?id=${application.job._id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setRating(response.data.rating);
-  //       console.log(response.data);
-  //     })
-  //     .catch((err) => {
-  //       // console.log(err.response);
-  //       console.log(err.response.data);
-  //       setPopup({
-  //         open: true,
-  //         severity: "error",
-  //         message: "Error",
-  //       });
-  //     });
-  // };
-
-  // const changeRating = () => {
-  //   axios
-  //     .put(
-  //       apiList.rating,
-  //       { rating: rating, jobId: application.job._id },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setPopup({
-  //         open: true,
-  //         severity: "success",
-  //         message: "Rating updated successfully",
-  //       });
-  //       fetchRating();
-  //       setOpen(false);
-  //     })
-  //     .catch((err) => {
-  //       // console.log(err.response);
-  //       console.log(err);
-  //       setPopup({
-  //         open: true,
-  //         severity: "error",
-  //         message: err.response.data.message,
-  //       });
-  //       fetchRating();
-  //       setOpen(false);
-  //     });
-  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -161,7 +103,7 @@ const ApplicationTile = (props) => {
       className={`${classes.jobTileOuter} cursor-pointer`}
       elevation={3}
       onClick={() => navigate(`/detailjob/${job._id}`)}
-      style={{height: "190px"}}
+      style={{ height: "190px" }}
     >
       <Grid container>
         <Grid container item xs={12} spacing={1} direction="row">
@@ -192,7 +134,7 @@ const ApplicationTile = (props) => {
               <img
                 src={job.image}
                 alt="Employers Logo"
-                style={{ marginRight: "10px", width: "40px"}}
+                style={{ marginRight: "10px", width: "40px" }}
               />
             </Grid>
             <Grid>
@@ -303,23 +245,16 @@ const Applications = (props) => {
   const classes = useStyles();
   const [searchTerm, setSearchTerm] = useState("");
   const [location, setLocation] = useState("");
-  const [level, setLevel] = useState("");
   const [contractType, setContractType] = useState("");
   const [salary, setSalary] = useState("");
+  const history = useNavigate();
 
   const handleSearch = () => {
     // Handle search here
   };
 
-  const locations = ["Hanoi", "Ho Chi Minh", "Da Nang", "Hai Phong", "Can Tho"];
-  const levels = ["Intern", "Junior", "Mid-level", "Senior", "Manager"];
-  const contractTypes = [
-    "Full-time",
-    "Part-time",
-    "Contract",
-    "Temporary",
-    "Internship",
-  ];
+  const locations = ["All location", "America", "Japan", "Berlin"];
+  const contractTypes = ["Full Time", "Part Time"];
   const salaries = [
     "Under $10000",
     "$10000 - $20000",
@@ -331,6 +266,12 @@ const Applications = (props) => {
     getData();
   }, []);
 
+  useEffect(() => {
+    if (userType() === "recruiter") {
+      history("/listcv");
+    }
+  }, []);
+
   const getData = () => {
     axios
       .get(apiList.jobs, {
@@ -339,12 +280,10 @@ const Applications = (props) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
         setJobs(response.data);
       })
       .catch((err) => {
         // console.log(err.response);
-        console.log(err.response.data);
         setPopup({
           open: true,
           severity: "error",
@@ -354,8 +293,13 @@ const Applications = (props) => {
   };
 
   return (
-    <Grid container direction="row" >
-      <Grid item xs={12} className={classes.searchBar} style={{paddingTop: "10px"}}>
+    <Grid container direction="row" style={{ padding: "0 100px"}}>
+      <Grid
+        item
+        xs={12}
+        className={classes.searchBar}
+        style={{ paddingTop: "10px" }}
+      >
         <TextField
           label="Search"
           variant="outlined"
@@ -375,75 +319,51 @@ const Applications = (props) => {
       </Grid>
 
       <Grid container direction="row" spacing={2} className={classes.filterBar}>
-      <Grid item xs={3} >
+        <Grid item xs={3}>
           <FormControl variant="outlined" fullWidth>
-          {!location && <InputLabel>All Locations</InputLabel>}
+            {!location && <InputLabel>All Locations</InputLabel>}
             <Select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               MenuProps={{
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "left"
+                  horizontal: "left",
                 },
                 transformOrigin: {
                   vertical: "top",
-                  horizontal: "left"
+                  horizontal: "left",
                 },
-                getContentAnchorEl: null
+                getContentAnchorEl: null,
               }}
             >
               {locations.map((location) => (
-        <MenuItem value={location}>{location}</MenuItem>
-      ))} 
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={3}>
-          <FormControl variant="outlined" fullWidth>
-          {!level && <InputLabel>All Levels</InputLabel>}
-            <Select
-              value={level}
-              onChange={(e) => setLevel(e.target.value)}
-              MenuProps={{
-                anchorOrigin: {
-                  vertical: "bottom",
-                  horizontal: "left"
-                },
-                transformOrigin: {
-                  vertical: "top",
-                  horizontal: "left"
-                },
-                getContentAnchorEl: null
-              }}
-            >
-              {levels.map((level) => (
-        <MenuItem value={level}>{level}</MenuItem>
+                <MenuItem value={location}>{location}</MenuItem>
               ))}
             </Select>
           </FormControl>
         </Grid>
         <Grid item xs={3}>
           <FormControl variant="outlined" fullWidth>
-          {!contractType && <InputLabel>All Contract Types</InputLabel>}
+            {!contractType && <InputLabel>All Contract Types</InputLabel>}
             <Select
               value={contractType}
               onChange={(e) => setContractType(e.target.value)}
               MenuProps={{
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "left"
+                  horizontal: "left",
                 },
                 transformOrigin: {
                   vertical: "top",
-                  horizontal: "left"
+                  horizontal: "left",
                 },
-                getContentAnchorEl: null
+                getContentAnchorEl: null,
               }}
             >
-      {contractTypes.map((contractType) => (
-        <MenuItem value={contractType}>{contractType}</MenuItem>
-      ))}
+              {contractTypes.map((contractType) => (
+                <MenuItem value={contractType}>{contractType}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Grid>
@@ -456,48 +376,81 @@ const Applications = (props) => {
               MenuProps={{
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "left"
+                  horizontal: "left",
                 },
                 transformOrigin: {
                   vertical: "top",
-                  horizontal: "left"
+                  horizontal: "left",
                 },
-                getContentAnchorEl: null
+                getContentAnchorEl: null,
               }}
             >
-      {salaries.map((salary) => (
-        <MenuItem value={salary}>{salary}</MenuItem>
-      ))}
+              {salaries.map((salary) => (
+                <MenuItem value={salary}>{salary}</MenuItem>
+              ))}
             </Select>
           </FormControl>
         </Grid>
       </Grid>
 
       <Grid
-      item
-      direction="column"
-      alignItems="center"
-      style={{ padding: "30px", minHeight: "93vh", paddingTop: "150px", width: "100%"
-       }}
-    >
-      <Grid
-        container
         item
-        xs 
-        direction="row"
-        style={{ width: "100%"}}
-        // alignItems="stretch"
-        justify="center"
-        spacing={2}
+        direction="column"
+        alignItems="center"
+        style={{
+          padding: "30px",
+          paddingTop: "20px",
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "baseline",
+        }}
       >
-        {jobs.map((job) => (
-            <Grid item xs={4}>
-              <ApplicationTile job={job} />
-            </Grid>
-          ))}
+        <Grid
+          container
+          item
+          xs
+          direction="row"
+          style={{ width: "100%", height:"65vh", overflowY: "auto"}}
+          // alignItems="stretch"
+          // justify="between"
+          spacing={1}
+        >
+          {jobs
+            .filter((job) => {
+              if (location === "All location") return true;
+              else if (location)
+                return job.address
+                  ?.toUpperCase()
+                  .includes(location.toUpperCase());
+              else return true;
+            })
+            .filter((job) => {
+              if (contractType) return job.jobType === contractType;
+              else return true;
+            })
+            .filter((job) => {
+              if (salary === "Under $10000") return job.salary < 10000;
+              if (salary === "$10000 - $20000")
+                return job.salary >= 10000 && job.salary < 20000;
+              if (salary === "$20000 - $30000")
+                return job.salary >= 20000 && job.salary < 30000;
+              if (salary === "Over $30000") return job.salary >= 30000;
+              else return true;
+            })
+            .filter((job) => {
+              if (!searchTerm) return true;
+              return job.title.toUpperCase().includes(searchTerm.toUpperCase());
+            })
+            .map((job) => (
+              <Grid item xs={4}>
+                <ApplicationTile job={job} />
+              </Grid>
+            ))}
+        </Grid>
       </Grid>
     </Grid>
-    </Grid>
-)};
+  );
+};
 
 export default Applications;

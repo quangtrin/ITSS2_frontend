@@ -65,8 +65,10 @@ const JobTile = (props) => {
   };
 
   const handleApply = () => {
+    console.log(apiList.jobs);
     console.log(job._id);
     console.log(sop);
+
     axios
       .post(
         `${apiList.jobs}/${job._id}/applications`,

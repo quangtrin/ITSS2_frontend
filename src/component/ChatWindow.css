@@ -1,8 +1,8 @@
 .chat-window {
     display: flex;
     flex-direction: column;
-    height: 89vh;
-    width: 40vw;
+    height: 84vh;
+    width: 30vw;
     border: 1px solid #ccc;
     border-radius: 10px;
   }

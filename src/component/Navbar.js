@@ -27,8 +27,8 @@ const Navbar = (props) => {
   let history = useHistory();
 
   const handleClick = (location) => {
-    console.log(location);
-    history(location);
+    props.setChatFeature(false);
+    window.location.href = location
   };
 
   return (
@@ -39,11 +39,15 @@ const Navbar = (props) => {
           variant="h6"
           className={classes.title}
           onClick={() => {
-            props.setChatFeature(false);
-            history("/");
+            props.setChatFeature(true);
+            userType() === "recruiter"
+            ? history("/listcv")
+            : history("/applications");
           }}
         >
-          Find Job
+          {
+            userType() === "recruiter" ? "Recruiter" : "Applicant"
+          }
         </Typography>
         {isAuth() ? (
           userType() === "recruiter" ? (
@@ -63,9 +67,9 @@ const Navbar = (props) => {
               {/* <Button color="inherit" onClick={() => handleClick("/profile")}>
                 Profile
               </Button> */}
-              {/* <Button color="inherit" onClick={() => handleClick("/logout")}>
+              <Button color="inherit" onClick={() => handleClick("/")}>
                 Logout
-              </Button> */}
+              </Button>
             </>
           ) : (
             <>
@@ -81,9 +85,9 @@ const Navbar = (props) => {
               {/* <Button color="inherit" onClick={() => handleClick("/profile")}>
                 Profile
               </Button> */}
-              {/* <Button color="inherit" onClick={() => handleClick("/logout")}>
+              <Button color="inherit" onClick={() => handleClick("/")}>
                 Logout
-              </Button> */}
+              </Button>
             </>
           )
         ) : (
