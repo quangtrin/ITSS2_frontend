@@ -42,10 +42,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     textTransform: "uppercase",
     padding: "30px",
-    paddingRight: 0,
   },
   jobTileOuter: {
     padding: "30px",
+    paddingRight: 0,
     boxSizing: "border-box",
     width: "100%",
   },
