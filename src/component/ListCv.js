@@ -11,18 +11,6 @@ const { Search } = Input;
 const ListCv = () => {
   const history = useNavigate();
   const [listcv, setListcv] = useState([]);
-  const data = [
-    {
-      userImage: "https://api.dicebear.com/7.x/miniavs/svg?seed=1",
-      userName: "quang",
-      jobLevel: "Developer",
-      phoneNumber: "0123456789",
-      companyImage:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReDf5TOy1BLHTd4XHKHbSeKyYmr82upgnb8Q&s",
-      experience: "4 years",
-      companyLocation: "Ha Noi",
-    },
-  ];
 
   useEffect(() => {
     const fetchCv = async () => {
@@ -52,7 +40,7 @@ const ListCv = () => {
         size="large"
         styles={{ height: 72, borderRadius: 8 }}
       />
-      <div className=" flex flex-col justify-between items-center gap-4 w-full">
+      <div className=" flex flex-col justify-between items-center gap-4 w-full" style={{overflowY: "auto", maxHeight: "65vh"}}>
         {listcv?.map((item) => (
           <CvItem userCvData={item} />
         ))}

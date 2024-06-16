@@ -26,7 +26,6 @@ import ChatPopup from "./component/ChatPopup";
 import ChatWindow from "./component/ChatWindow";
 import { server } from "./lib/apiList";
 
-
 const useStyles = makeStyles((theme) => ({
   body: {
     display: "flex",
@@ -87,7 +86,13 @@ function App() {
               <Route exact path="/logout" element={<Logout />} />
               <Route exact path="/home" element={<Home />} />
               <Route exact path="/applications" element={<Applications />} />
-              <Route exact path="/detailJob/:id" element={<DetailJob />} />
+              <Route
+                exact
+                path="/detailJob/:id"
+                element={
+                  <DetailJob messages={messages} setMessages={setMessages} socket={socket} />
+                }
+              />
               <Route
                 exact
                 path="/profile"
@@ -124,7 +129,7 @@ function App() {
           message={popup.message}
         />
         {chatFeature && (
-          <div className=" fixed bottom-10 right-10">
+          <div className=" fixed bottom-10 right-10 cursor-pointer">
             <Popover
               open={openListMessage}
               trigger={"click"}

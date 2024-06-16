@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import ApplyModal from "./ApplyModal";
 import { Spin } from "antd";
-const DetailJob = () => {
+const DetailJob = ({ socket, messages, setMessages }) => {
   const jobID = useParams().id;
   const [job, setJob] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -80,6 +80,9 @@ const DetailJob = () => {
           isOpen={isPopupOpen}
           onClose={closePopup}
           jobId={jobID}
+          socket={socket}
+          messages={messages}
+          setMessages={setMessages}
         />
       </div>
       <div className=" flex justify-between gap-4 ">

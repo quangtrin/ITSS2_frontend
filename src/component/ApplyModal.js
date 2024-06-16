@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Form, Input, message, Spin } from "antd";
+import { Form, Input, Spin, message } from "antd";
 import axios from "axios";
 import * as pdfjsLib from "pdfjs-dist/webpack";
-import { server } from "../lib/apiList";
+import apiList, { server } from "../lib/apiList";
 
-const ApplyModal = ({ isOpen, onClose, jobId, setIsApllied }) => {
+const ApplyModal = ({ isOpen, onClose, jobId, setIsApllied, socket, messages, setMessages }) => {
   const [form] = Form.useForm();
   const [file, setFile] = useState(null);
   const [urlFile, setUrlFile] = useState("");
@@ -98,6 +98,20 @@ const ApplyModal = ({ isOpen, onClose, jobId, setIsApllied }) => {
         form.resetFields();
         setUrlFile("");
         onClose();
+        const res = await axios.post(
+          apiList.sendChat,
+          {
+            content: sop,
+            receiver: "666b1a588485c943a4acedb8",
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setMessages([...messages, res.data?.message]);
+        if (socket) socket.emit("new-message", { message: res.data?.message });
       } catch (error) {
         console.error("Error submitting application:", error);
         message.error("Error submitting application");

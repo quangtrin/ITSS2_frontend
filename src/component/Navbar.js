@@ -28,7 +28,7 @@ const Navbar = (props) => {
 
   const handleClick = (location) => {
     props.setChatFeature(false);
-    window.location.href = location
+    window.location.href = location;
   };
 
   return (
@@ -41,64 +41,38 @@ const Navbar = (props) => {
           onClick={() => {
             props.setChatFeature(true);
             userType() === "recruiter"
-            ? history("/listcv")
-            : history("/applications");
+              ? history("/listcv")
+              : history("/applications");
           }}
         >
-          {
-            userType() === "recruiter" ? "Recruiter" : "Applicant"
-          }
+          {!isAuth()
+            ? ""
+            : userType() === "recruiter"
+            ? "Recruiter"
+            : "Applicant"}
         </Typography>
         {isAuth() ? (
           userType() === "recruiter" ? (
             <>
-              {/* <Button color="inherit" onClick={() => handleClick("/home")}>
-                Home
-              </Button> */}
-              {/* <Button color="inherit" onClick={() => handleClick("/addjob")}>
-                Add Jobs
-              </Button>
-              <Button color="inherit" onClick={() => handleClick("/myjobs")}>
-                My Jobs
-              </Button> */}
-              {/* <Button color="inherit" onClick={() => handleClick("/employees")}>
-                Employees
-              </Button> */}
-              {/* <Button color="inherit" onClick={() => handleClick("/profile")}>
-                Profile
-              </Button> */}
               <Button color="inherit" onClick={() => handleClick("/")}>
                 Logout
               </Button>
             </>
           ) : (
             <>
-              {/* <Button color="inherit" onClick={() => handleClick("/home")}>
-                Home
-              </Button> */}
               <Button
                 color="inherit"
                 onClick={() => handleClick("/applications")}
               >
                 Job
               </Button>
-              {/* <Button color="inherit" onClick={() => handleClick("/profile")}>
-                Profile
-              </Button> */}
               <Button color="inherit" onClick={() => handleClick("/")}>
                 Logout
               </Button>
             </>
           )
         ) : (
-          <>
-            <Button color="inherit" onClick={() => handleClick("/login")}>
-              Login
-            </Button>
-            {/* <Button color="inherit" onClick={() => handleClick("/signup")}>
-              Signup
-            </Button> */}
-          </>
+          <></>
         )}
       </Toolbar>
     </div>

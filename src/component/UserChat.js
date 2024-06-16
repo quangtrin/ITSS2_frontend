@@ -12,7 +12,7 @@ const UserChat = ({
 }) => {
   return (
     <div
-      className="user-chat"
+      className="user-chat cursor-pointer"
       onClick={() => {
         setOpenMessage(!openMessage);
         setOpenListMessage(false);
