@@ -29,6 +29,10 @@ const ChatPopup = ({
       }); // fetch user data from API
       setMessages(res.data);
       const lastMessage = res.data[0];
+      if (!lastMessage) {
+        setLoading(false);
+        return;
+      }
       setReceiver(
         userType() === lastMessage.sender.type
           ? lastMessage.receiver
@@ -64,7 +68,7 @@ const ChatPopup = ({
 
   return !loading ? (
     <div className="chat-list">
-      {users &&
+      {users ?
         users.map((user, index) => (
           <UserChat
             key={index}
@@ -73,7 +77,7 @@ const ChatPopup = ({
             openMessage={openMessage}
             setOpenListMessage={setOpenListMessage}
           />
-        ))}
+        )) : <div>Don't have any messages</div>}
     </div>
   ) : (
     <div>
