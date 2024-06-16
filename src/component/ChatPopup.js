@@ -46,7 +46,7 @@ const ChatPopup = ({
       setUsers([
         {
           name: userType() === "recruiter" ? "Quang" : "quangceo",
-          lastMessage: messages?.pop(),
+          lastMessage: messages[messages.length - 1],
           timestamp: "1 giờ",
           avatar:
             userType() === "recruiter"
@@ -58,7 +58,7 @@ const ChatPopup = ({
     };
     fetchMessages();
   }, [messages]);
-  
+
   return !loading ? (
     <div className="chat-list">
       {users &&

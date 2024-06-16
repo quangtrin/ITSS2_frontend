@@ -22,7 +22,7 @@ const UserChat = ({
       <div className="user-details">
         <h4 className="user-name">{user.name}</h4>
         <p className="last-message">
-          {userType() === user.lastMessage?.type && "You: "}
+          {userType() === user.lastMessage?.sender.type && "You: "}
           {user.lastMessage?.content}
         </p>
       </div>
