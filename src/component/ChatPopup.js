@@ -42,7 +42,10 @@ const ChatPopup = ({
   useEffect(() => {
     const fetchMessages = async () => {
       setLoading(true);
-
+      if (messages.length === 0) {
+        setLoading(false);
+        return;
+      }
       setUsers([
         {
           name: userType() === "recruiter" ? "Quang" : "quangceo",
